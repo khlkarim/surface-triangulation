@@ -1,0 +1,53 @@
+[project]
+name = "surface-triangulation"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "khlkarim",email = "karimkahili002@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13,<4.0"
+dependencies = [
+    "pyqt6 (>=6.10.0,<7.0.0)",
+    "pydantic (>=2.12.5,<3.0.0)",
+    "loguru (>=0.7.3,<0.8.0)",
+    "gurobipy (>=13.0.0,<14.0.0)",
+    "vispy (>=0.15.2,<0.16.0)",
+    "pyqt6-qt6 (>=6.10.1,<7.0.0)",
+    "pyqt6-3d (>=6.10.0,<7.0.0)",
+    "pyqtgraph (>=0.14.0,<0.15.0)",
+    "python-dotenv (>=1.2.1,<2.0.0)",
+    "trimesh (>=4.10.0,<5.0.0)"
+]
+
+[tool.poetry.scripts]
+main = "surface_triangulation.main:main"
+
+[tool.poetry]
+packages = [{include = "surface_triangulation", from = "src"}, {include = "tests", from = "."}]
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "."
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "ruff (>=0.14.6,<0.15.0)",
+    "mypy (>=1.19.0,<2.0.0)",
+    "pytest (>=9.0.1,<10.0.0)",
+    "pytest-qt (>=4.5.0,<5.0.0)"
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-select = ["I", "N", "Q"]  # import sorting, naming, quote rules
+
+[tool.mypy]
+ignore_missing_imports = true
+strict = true
