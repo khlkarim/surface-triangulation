@@ -9,7 +9,7 @@ class Canvas(QWidget):
 
         self.canvas = SceneCanvas(keys='interactive', show=True)
         self.view = self.canvas.central_widget.add_view()
-        self.view.camera = TurntableCamera(fov=60)
+        self.view.camera = TurntableCamera(fov=75, elevation=45, azimuth=140)
 
         self.mesh_renderer = MeshRenderer(self.view)
 
@@ -35,6 +35,3 @@ class Canvas(QWidget):
 
     def set_render_mode(self, mode):
         self.render_mode_dropdown.setCurrentIndex(mode)
-
-    def set_available_render_modes(self):
-        pass

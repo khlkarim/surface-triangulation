@@ -1,9 +1,6 @@
-from loguru import logger
-
 from PyQt6.QtCore import QObject, pyqtSlot
 from surface_triangulation.ui.views.main import MainView
 from surface_triangulation.ui.models.mesh_model import MeshModel
-from surface_triangulation.ui.renderers.render_mode import RenderMode
 from surface_triangulation.ui.data_mappers.core_data_mapper import CoreDataMapper
 from surface_triangulation.core.services.triangulation_service import TriangulationService
 from surface_triangulation.ui.models.triangulation_config_model import TriangulationConfigModel
@@ -15,7 +12,7 @@ class TriangulationController(QObject):
         solution_mesh: MeshModel,
         config: TriangulationConfigModel, 
         triangulation_service: TriangulationService,
-        data_mapper: CoreDataMapper
+        core_data_mapper: CoreDataMapper
     ):
         super().__init__()
         
@@ -25,7 +22,7 @@ class TriangulationController(QObject):
         self.problem_mesh = problem_mesh
         self.solution_mesh = solution_mesh
         self.triangulation_service = triangulation_service
-        self.data_mapper = data_mapper
+        self.core_data_mapper = core_data_mapper
 
         self._connect_signals()
 
@@ -34,16 +31,8 @@ class TriangulationController(QObject):
 
     @pyqtSlot()
     def triangulate(self):
-        print("triangulate")
-        
-        triangulation_problem = self.data_mapper.to_triangulation_problem(self.problem_mesh, self.config)
-        logger.info(triangulation_problem)
-
+        triangulation_problem = self.core_data_mapper.to_triangulation_problem(self.problem_mesh, self.config)
         triangulation_solution = self.triangulation_service.solve(triangulation_problem)
-        logger.info(triangulation_solution)
-        
-        mesh_solution = self.data_mapper.from_triangulation_solution(triangulation_problem, triangulation_solution)
-        logger.info(mesh_solution.vertices)
-        logger.info(mesh_solution.edges)
+        mesh_solution = self.core_data_mapper.from_triangulation_solution(triangulation_problem, triangulation_solution)
 
         self.solution_mesh.reset(mesh_solution.vertices, mesh_solution.edges, mesh_solution.faces)

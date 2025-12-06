@@ -1,4 +1,5 @@
 from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QPushButton, QFormLayout, QVBoxLayout)
+
 from surface_triangulation.config.app_config import Config
 from surface_triangulation.ui.views.widgets.input.input_tab import InputTab
 from surface_triangulation.ui.views.widgets.input.objective_selector import ObjectiveSelector
@@ -38,7 +39,6 @@ class TriangulationConfig(QDialog):
 
         self.setLayout(layout)
 
-
     def get_selected_objective(self):
         return self.objective_selector.get_selected()
     def set_selected_objective(self, objective):
@@ -49,7 +49,6 @@ class TriangulationConfig(QDialog):
     def get_selected_constraints(self):
         return self.constraints_selector.get_selected()
 
-    
     def hide_config_popup(self):
         if self.isVisible():
             self.hide()

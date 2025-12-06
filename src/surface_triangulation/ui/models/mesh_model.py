@@ -86,6 +86,3 @@ class MeshModel(QObject):
             self.faces = faces
 
         self.data_changed.emit()
-
-    def get_available_render_modes(self):
-        pass

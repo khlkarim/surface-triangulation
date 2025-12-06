@@ -9,6 +9,7 @@ class Controls(QWidget):
         
         self.triangulation_config = TriangulationConfig()
         self.config_btn = QPushButton("Configure triangulation parameters")
+        
         self.config_btn.clicked.connect(self.show_config_popup)
 
         layout = QVBoxLayout()

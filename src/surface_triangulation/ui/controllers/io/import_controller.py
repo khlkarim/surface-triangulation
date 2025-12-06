@@ -1,10 +1,7 @@
-import numpy as np
-from math import cos, sin, radians
 from PyQt6.QtCore import QObject, pyqtSlot
 from surface_triangulation.ui.services.io_service import IOService
 from surface_triangulation.ui.views.main import MainView
 from surface_triangulation.ui.models.mesh_model import MeshModel
-from surface_triangulation.ui.renderers.render_mode import RenderMode
 
 class ImportController(QObject):
     def __init__(self, 
@@ -21,17 +18,16 @@ class ImportController(QObject):
         self._connect_signals()
 
     def _connect_signals(self):
-        self.view.import_btn.file_selected.connect(self.load_data)
-        self.view.import_btn.file_unloaded.connect(self.unload_data)
+        self.view.import_widget.import_btn.clicked.connect(self.load_data)
 
     @pyqtSlot()
     def load_data(self):
-        """Handle loading data and updating the load canvas."""
-        path = self.view.import_btn.selected_file()
+        path = self.view.import_widget.import_tab.file_input.selected_file()
+        csv_string = self.view.import_widget.import_tab.text_input.toPlainText()
+
         if path is not None:
             self.import_service.load(path, self.model)
-
-    @pyqtSlot()
-    def unload_data(self):
-        """Handle unloading data and updating the load canvas."""
-        self.model.reset()
+            self.view.import_widget.import_tab.file_input._unload_file()
+            self.view.import_widget.import_tab.text_input.setPlainText(None)
+        else:
+            self.model.reset(vertices=self.import_service.parse_csv_to_list(csv_string))

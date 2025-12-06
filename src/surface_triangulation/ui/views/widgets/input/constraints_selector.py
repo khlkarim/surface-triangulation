@@ -23,7 +23,6 @@ class ConstraintsSelector(QWidget):
         return [item.data(1000) for item in self.list_widget.selectedItems()]
     
     def set_selected(self, constraints: list[TriangulationConstraint]):
-        """Select items in the list widget based on a list of constraints."""
         self.list_widget.clearSelection()  # Clear previous selection
 
         for i in range(self.list_widget.count()):

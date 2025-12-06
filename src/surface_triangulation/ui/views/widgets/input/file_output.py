@@ -9,18 +9,13 @@ class FileOutputWidget(QWidget):
 
         self.button = QPushButton(label)
         self.button.clicked.connect(self._on_export_clicked)
-        self.button.setMinimumHeight(60)
+        self.button.setMinimumHeight(45)
 
         layout = QHBoxLayout(self)
         layout.addWidget(self.button)
 
     def _on_export_clicked(self):
-        file_path, _ = QFileDialog.getSaveFileName(
-            self,
-            "Select export destination",
-            "",
-            "All Files (*.*)"
-        )
+        file_path, _ = QFileDialog.getSaveFileName(self, "Select export destination", "", "All Files (*.*)")
 
         if file_path:
             self.file_selected.emit(file_path)
