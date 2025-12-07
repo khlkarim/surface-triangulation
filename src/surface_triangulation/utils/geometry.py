@@ -82,3 +82,11 @@ def convex_hull_surface(vertices: List[Tuple[float, float, float]]) -> float:
     hull = mp.convex_hull
 
     return hull.area
+
+def get_number_of_vertices_on_boundry(vertices: List[Tuple[float, float, float]]) -> int:
+    pts_2d = [(x, y) for x, y, _ in vertices]
+
+    mp = MultiPoint(pts_2d)
+    hull = mp.convex_hull
+
+    return len(hull.boundary.coords)-1

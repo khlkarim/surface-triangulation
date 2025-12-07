@@ -1,7 +1,9 @@
 from math import cos, sin, radians
+from loguru import logger
 import numpy as np
 from surface_triangulation.utils.geometry import (
     find_edge_crossings,
+    get_number_of_vertices_on_boundry,
     points_are_planar,
     find_triangle_crossings,
     convex_hull_surface
@@ -11,7 +13,7 @@ from surface_triangulation.utils.geometry import (
 # Tests for find_edge_crossings
 # -------------------------------
 
-def test_find_edge_crossings_no_crossings():
+def test_find_edge_crossings_NO_CROSSING_EDGES():
     vertices = [(0.,0,0), (1,0,0), (1,1,0), (0,1,0)]
     edges = [(0,1), (2,3)]
     crossings = find_edge_crossings(vertices, edges)
@@ -50,7 +52,7 @@ def test_points_are_planar_non_planar():
 # Tests for find_triangle_crossings
 # -------------------------------
 
-def test_find_triangle_crossings_no_crossings():
+def test_find_triangle_crossings_NO_CROSSING_EDGES():
     vertices = [(0,0,0.), (1,0,0), (0,1,0), (2,0,0), (2,1,0), (3,0,0)]
     faces = [(0,1,2), (3,4,5)]
     crossings = find_triangle_crossings(vertices, faces)
@@ -103,3 +105,18 @@ def test_convex_hull_surface_single_point():
     vertices = [(0.,0.,0.)]
     area = convex_hull_surface(vertices)
     assert area == 0.0
+
+def test_get_number_of_vertices_on_boundry():
+    s = 1.0
+    R = s  # circumradius of a regular hexagon
+
+    vertices = [
+        (R * cos(radians(  0)), R * sin(radians(  0)), 0.0),
+        (R * cos(radians( 60)), R * sin(radians( 60)), 0.0),
+        (R * cos(radians(120)), R * sin(radians(120)), 0.0),
+        (R * cos(radians(180)), R * sin(radians(180)), 0.0),
+        (R * cos(radians(240)), R * sin(radians(240)), 0.0),
+        (R * cos(radians(300)), R * sin(radians(300)), 0.0),
+    ]
+
+    assert get_number_of_vertices_on_boundry(vertices) == 6

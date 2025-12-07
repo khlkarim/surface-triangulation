@@ -1,12 +1,19 @@
+from typing import List, Tuple
 from loguru import logger
 from gurobipy import LinExpr, Model, quicksum
-from surface_triangulation.utils.geometry import convex_hull_surface, find_edge_crossings, find_triangle_crossings, points_are_planar
+from surface_triangulation.utils.geometry import convex_hull_surface, find_edge_crossings, find_triangle_crossings, get_number_of_vertices_on_boundry, points_are_planar
 
 from surface_triangulation.core.models.triangulation_problem import TriangulationProblem
 from surface_triangulation.core.models.triangulation_contraints import TriangulationConstraint
 
-def apply_no_crossings(m: Model, problem: TriangulationProblem):
-    logger.debug("Applying NO_CROSSINGS constraint for edges")
+def assert_points_are_valid(vertices: List[Tuple[float, float, float]]):
+    if not points_are_planar(vertices):
+        logger.warning("Cannot apply constraints on none planar points.")
+        raise ValueError("Cannot apply constraints on none planar points.")
+
+def apply_no_crossing_edges(m: Model, problem: TriangulationProblem):
+    logger.debug("Applying NO_CROSSING_EDGES constraint")
+    assert_points_are_valid(problem.vertices)
 
     vertices = problem.vertices 
     edges = problem.candidate_edges
@@ -15,10 +22,11 @@ def apply_no_crossings(m: Model, problem: TriangulationProblem):
     logger.debug(f"Found {len(crossing_pairs)} crossing edge pairs")
 
     for e1, e2 in crossing_pairs:
-        m.addConstr(m._edge_vars[e1] + m._edge_vars[e2] <= 1, name=f"no_crossings_{e1}_{e2}")
+        m.addConstr(m._edge_vars[e1] + m._edge_vars[e2] <= 1, name=f"no_crossing_edges_{e1}_{e2}")
 
 def apply_triangle_edge_incidence(m: Model, problem: TriangulationProblem):
     logger.debug("Applying TRIANGLE_EDGE_INCIDENCE constraint")
+    assert_points_are_valid(problem.vertices)
 
     edge_vars = m._edge_vars 
     face_vars = m._face_vars
@@ -37,8 +45,9 @@ def apply_triangle_edge_incidence(m: Model, problem: TriangulationProblem):
 
 def apply_edge_count(m: Model, problem: TriangulationProblem):
     logger.debug("Applying EDGE_COUNT constraint")
+    assert_points_are_valid(problem.vertices)
 
-    k = len({v for e in problem.boundary_edges for v in e})
+    k = get_number_of_vertices_on_boundry(problem.vertices)
     n = len(problem.vertices)
     M = 3 * n - k - 3
 
@@ -52,7 +61,8 @@ def apply_edge_count(m: Model, problem: TriangulationProblem):
     m.addConstr(number_of_edges == M, name="num_edges_constraint")
 
 def apply_no_crossing_triangles(m: Model, problem: TriangulationProblem):
-    logger.debug("Applying NO_CROSSINGS constraint for triangules")
+    logger.debug("Applying NO_CROSSING_TRIANGLES constraint")
+    assert_points_are_valid(problem.vertices)
 
     vertices = problem.vertices 
     faces = problem.candidate_faces
@@ -61,10 +71,11 @@ def apply_no_crossing_triangles(m: Model, problem: TriangulationProblem):
     logger.debug(f"Found {len(crossing_pairs)} crossing triangle pairs")
 
     for f1, f2 in crossing_pairs:
-        m.addConstr(m._face_vars[f1] + m._face_vars[f2] <= 1, name=f"no_crossings_{f1}_{f2}")
+        m.addConstr(m._face_vars[f1] + m._face_vars[f2] <= 1, name=f"no_crossing_triangles_{f1}_{f2}")
 
 def apply_total_surface(m: Model, problem: TriangulationProblem):
-    logger.debug("Applying TOTAL_SURFACE constraint for triangules")
+    logger.debug("Applying TOTAL_SURFACE constraint for triangles")
+    assert_points_are_valid(problem.vertices)
 
     vertices = problem.vertices
 
@@ -82,16 +93,24 @@ def apply_total_surface(m: Model, problem: TriangulationProblem):
     m.addConstr(exp == S)
 
 def apply_formulation_0_2D(m: Model, problem: TriangulationProblem):
-    if not points_are_planar(problem.vertices):
-        logger.warning("Cannot apply formulation 0 (2D) constraints on none planar points.")
-        raise ValueError("Cannot apply formulation 0 (2D) constraints on none planar points.")
+    assert_points_are_valid(problem.vertices)
 
     apply_total_surface(m, problem)
     apply_no_crossing_triangles(m, problem)
 
+def apply_formulation_1_2D(m: Model, problem: TriangulationProblem):
+    assert_points_are_valid(problem.vertices)
+
+    apply_edge_count(m, problem)
+    apply_no_crossing_edges(m, problem)
+
 supported_constraints = {
+    TriangulationConstraint.FORMULATION_0_2D: apply_formulation_0_2D,
+    TriangulationConstraint.FORMULATION_1_2D: apply_formulation_1_2D,
+
     TriangulationConstraint.EDGE_COUNT: apply_edge_count,
-    TriangulationConstraint.NO_CROSSINGS: apply_no_crossings,
+    TriangulationConstraint.TOTAL_SURFACE: apply_total_surface,
+    TriangulationConstraint.NO_CROSSING_EDGES: apply_no_crossing_edges,
+    TriangulationConstraint.NO_CROSSING_TRIANGLES: apply_no_crossing_triangles,
     TriangulationConstraint.TRIANGLE_EDGE_INCIDENCE: apply_triangle_edge_incidence,
-    TriangulationConstraint.FORMULATION_0_2D: apply_formulation_0_2D
 }
