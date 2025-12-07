@@ -1,5 +1,6 @@
 from PyQt6.QtCore import QObject, pyqtSlot
 
+from surface_triangulation.ui.utils.exception_handling import handle_exceptions
 from surface_triangulation.ui.views.main import MainView
 
 from surface_triangulation.ui.services.triangulation_service import TriangulationService
@@ -30,6 +31,7 @@ class TriangulationController(QObject):
         self.view.controls.triangulate_btn.clicked.connect(self.triangulate)
 
     @pyqtSlot()
+    @handle_exceptions
     def triangulate(self):
         solution_mesh = self.triangulation_service.solve(self.problem_mesh, self.config)
         self.solution_mesh.reset(solution_mesh.vertices, solution_mesh.edges, solution_mesh.faces)

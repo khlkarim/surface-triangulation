@@ -16,7 +16,6 @@ class TxtLoaderService(MeshLoaderService):
         return MeshData(vertices=vertices)
 
     def export(self, path: str | Path, mesh: MeshData) -> None:
-        # Convert vertices to a 2D list
         rows = [list(vertex) for vertex in mesh.vertices]
 
         csv_string = list_to_csv(rows)

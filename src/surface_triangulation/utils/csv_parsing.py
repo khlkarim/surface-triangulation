@@ -7,7 +7,6 @@ def list_to_csv(data: List[List[Any]]) -> str:
     output = io.StringIO()
     writer = csv.writer(output)
     
-    # Convert each element to its repr so types can be restored later
     for row in data:
         writer.writerow([repr(item) for item in row])
     
@@ -19,7 +18,6 @@ def csv_to_list(csv_string: str) -> List[List[Any]]:
     
     result = []
     for row in reader:
-        # Use literal_eval to restore the original types
         result.append([literal_eval(item) for item in row])
     
     return result
