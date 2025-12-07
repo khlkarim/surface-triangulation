@@ -58,6 +58,7 @@ def build_problem():
         (0, 4, 5),
         (1, 2, 3),
         (1, 3, 4),
+        (1, 3, 5),
         (1, 4, 5),
         (1, 5, 0),
         (2, 3, 4),
@@ -68,9 +69,7 @@ def build_problem():
     ]
 
     constraints = [
-        TriangulationConstraint.NO_CROSSINGS,
-        TriangulationConstraint.EDGE_COUNT,
-        TriangulationConstraint.TRIANGLE_EDGE_INCIDENCE,
+        TriangulationConstraint.FORMULATION_0_2D,
     ]
 
     objective = TriangulationObjective.MINIMIZE_TOTAL_LENGTH
