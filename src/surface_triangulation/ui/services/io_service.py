@@ -1,15 +1,14 @@
-import csv
-from io import StringIO
 from pathlib import Path
 from surface_triangulation.mesh_io.mesh_data import MeshData
 from surface_triangulation.ui.models.mesh_model import MeshModel
 from surface_triangulation.mesh_io.mesh_loader_registry import MeshLoaderRegistry
+from surface_triangulation.utils.csv_parsing import csv_to_list, list_to_csv
 
 class IOService:
     """
     Provides high-level loading/exporting functionality over the MeshModel.
     Uses MeshLoaderRegistry for full mesh operations.
-    
+
     For vertices/faces/edges-only operations, uses a simple TXT/CSV format.
     """
 
@@ -25,6 +24,16 @@ class IOService:
             raise ValueError(
                 f"Invalid file extension '{ext}'. Expected '.txt' or '.csv'."
             )
+
+    def _load_2d_list_from_file(self, path: str | Path) -> list[list]:
+        with open(path, "r", newline="") as f:
+            csv_string = f.read()
+        return csv_to_list(csv_string)
+
+    def _export_2d_list_to_file(self, path: str | Path, data: list[list]) -> None:
+        csv_string = list_to_csv(data)
+        with open(path, "w", newline="") as f:
+            f.write(csv_string)
 
     # ---------------------------------------------------------
     # Full mesh load/export (delegated to registry)
@@ -45,57 +54,43 @@ class IOService:
         self.registry.export(path, mesh_data)
 
     # ---------------------------------------------------------
-    # Vertices-only loading/exporting from TXT
+    # Vertices-only loading/exporting from TXT/CSV
     # ---------------------------------------------------------
     def load_vertices(self, path: str | Path):
-        return self.registry.load_vertices(path)
+        rows = self._load_2d_list_from_file(path)
+        return [(float(r[0]), float(r[1]), float(r[2])) for r in rows]
 
     def export_vertices(self, path: str | Path, mesh_model) -> None:
         self._ensure_txt_or_csv(path)
-            
         if mesh_model.vertices is None:
             raise ValueError("Can't export mesh containing no vertices.")
-
-        mesh_data = MeshData(vertices=mesh_model.vertices)
-        self.registry.export(path, mesh_data)
+        rows = [list(v) for v in mesh_model.vertices]
+        self._export_2d_list_to_file(path, rows)
 
     # ---------------------------------------------------------
-    # Faces-only loading/exporting from TXT
+    # Faces-only loading/exporting from TXT/CSV
     # ---------------------------------------------------------
     def load_faces(self, path: str | Path):
-        return self.registry.load_faces(path)
+        rows = self._load_2d_list_from_file(path)
+        return [(int(r[0]), int(r[1]), int(r[2])) for r in rows]
 
     def export_faces(self, path: str | Path, mesh_model) -> None:
         self._ensure_txt_or_csv(path)
-
         if mesh_model.faces is None:
             raise ValueError("Can't export mesh containing no faces.")
-
-        mesh_data = MeshData(vertices=mesh_model.faces)
-        self.registry.export(path, mesh_data)
+        rows = [list(f) for f in mesh_model.faces]
+        self._export_2d_list_to_file(path, rows)
 
     # ---------------------------------------------------------
-    # Edges-only loading/exporting from TXT
+    # Edges-only loading/exporting from TXT/CSV
     # ---------------------------------------------------------
     def load_edges(self, path: str | Path):
-        return self.registry.load_edges(path)
+        rows = self._load_2d_list_from_file(path)
+        return [(int(r[0]), int(r[1])) for r in rows]
 
     def export_edges(self, path: str | Path, mesh_model) -> None:
         self._ensure_txt_or_csv(path)
-
         if mesh_model.edges is None:
-            raise ValueError("Can't export mesh containing no faces.")
-
-        mesh_data = MeshData(vertices=mesh_model.edges)
-        self.registry.export(path, mesh_data)
-
-    def parse_csv_to_list(self, csv_string: str):
-        csv_file = StringIO(csv_string)
-        reader = csv.reader(csv_file)
-        result = []
-        for row in reader:
-            float_row = []
-            for value in row:
-                float_row.append(float(value))
-            result.append(float_row)
-        return result
+            raise ValueError("Can't export mesh containing no edges.")
+        rows = [list(e) for e in mesh_model.edges]
+        self._export_2d_list_to_file(path, rows)

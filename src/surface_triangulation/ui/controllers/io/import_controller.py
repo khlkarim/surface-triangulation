@@ -2,6 +2,7 @@ from PyQt6.QtCore import QObject, pyqtSlot
 from surface_triangulation.ui.services.io_service import IOService
 from surface_triangulation.ui.views.main import MainView
 from surface_triangulation.ui.models.mesh_model import MeshModel
+from surface_triangulation.utils.csv_parsing import csv_to_vertices
 
 class ImportController(QObject):
     def __init__(self, 
@@ -26,8 +27,9 @@ class ImportController(QObject):
         csv_string = self.view.import_widget.import_tab.text_input.toPlainText()
 
         if path is not None:
-            self.import_service.load(path, self.model)
-            self.view.import_widget.import_tab.file_input._unload_file()
-            self.view.import_widget.import_tab.text_input.setPlainText(None)
-        else:
-            self.model.reset(vertices=self.import_service.parse_csv_to_list(csv_string))
+            self.import_service.load(path, self.model)    
+        elif len(csv_string) > 0:
+            self.model.reset(vertices=csv_to_vertices(csv_string))
+
+        self.view.import_widget.import_tab.file_input._unload_file()
+        self.view.import_widget.import_tab.text_input.setPlainText(None)
