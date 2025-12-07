@@ -11,10 +11,6 @@ class CoreDataMapper:
         mesh: MeshModel, 
         config: TriangulationConfigModel
     ) -> TriangulationProblem:
-        """
-        Convert MeshModel + TriangulationConfigModel -> TriangulationProblem.
-        Vertices come from MeshModel, all other attributes from TriangulationConfigModel.
-        """
         if mesh.vertices is None:
             raise ValueError("MeshModel must have vertices defined")
 
@@ -32,11 +28,6 @@ class CoreDataMapper:
         problem: TriangulationProblem,
         solution: TriangulationSolution
     ) -> MeshModel:
-        """
-        Build a MeshModel representing the solution geometry.
-        - Vertices come from the original problem.
-        - Faces come from the solution's selected_faces.
-        """
         if problem.vertices is None:
             raise ValueError("TriangulationProblem must have vertices defined")
 

@@ -14,7 +14,7 @@ class TriangulationConfigModel(QObject):
         self._constraints: List[TriangulationConstraint] = []
         self._objective: TriangulationObjective = TriangulationObjective.MINIMIZE_TOTAL_LENGTH
 
-    # --- Candidate edges ---
+    # Candidate edges
     @property
     def candidate_edges(self) -> List[Tuple[int, int]]:
         return self._candidate_edges
@@ -25,7 +25,7 @@ class TriangulationConfigModel(QObject):
             self._candidate_edges = value
             self.data_changed.emit()
 
-    # --- Candidate faces ---
+    # Candidate faces
     @property
     def candidate_faces(self) -> List[Tuple[int, int, int]]:
         return self._candidate_faces
@@ -36,7 +36,7 @@ class TriangulationConfigModel(QObject):
             self._candidate_faces = value
             self.data_changed.emit()
 
-    # --- Boundary edges ---
+    # Boundary edges
     @property
     def boundary_edges(self) -> List[Tuple[int, int]]:
         return self._boundary_edges
@@ -47,7 +47,7 @@ class TriangulationConfigModel(QObject):
             self._boundary_edges = value
             self.data_changed.emit()
 
-    # --- Constraints ---
+    # Constraints
     @property
     def constraints(self) -> List[TriangulationConstraint]:
         return self._constraints
@@ -58,7 +58,7 @@ class TriangulationConfigModel(QObject):
             self._constraints = value
             self.data_changed.emit()
 
-    # --- Objective ---
+    # Objective
     @property
     def objective(self) -> TriangulationObjective | None:
         return self._objective
@@ -70,7 +70,6 @@ class TriangulationConfigModel(QObject):
             self.data_changed.emit()
 
     def hydrated(self) -> bool:
-        """Check if all required data is set (non-empty lists and objective)."""
         return all([
             bool(self._candidate_edges),
             bool(self._candidate_faces),

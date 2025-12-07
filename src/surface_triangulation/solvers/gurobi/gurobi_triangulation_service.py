@@ -1,4 +1,3 @@
-from gurobipy import GRB
 from .gurobi_data_mapper import GurobiDataMapper
 from surface_triangulation.core.models.triangulation_problem import TriangulationProblem
 from surface_triangulation.core.models.triangulation_solution import TriangulationSolution

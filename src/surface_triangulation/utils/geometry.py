@@ -3,12 +3,6 @@ from shapely.geometry import LineString
 from shapely.strtree import STRtree
 
 def find_edge_crossings(vertices: List[Tuple[float, float, float]], edges: List[Tuple[int, int]]):
-    """
-    vertices: list of (x, y)
-    edges: list of (i, j) indices into vertices
-    returns: list of ((i1, j1), (i2, j2)) intersecting edge pairs
-    """
-    
     # Build geometries
     segments = []
     for (a, b) in edges:

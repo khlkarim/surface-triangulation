@@ -18,7 +18,7 @@ class TxtLoaderService(MeshLoaderService):
     def export(self, path: str | Path, mesh: MeshData) -> None:
         # Convert vertices to a 2D list
         rows = [list(vertex) for vertex in mesh.vertices]
-        
+
         csv_string = list_to_csv(rows)
         with open(path, "w", newline="") as f:
             f.write(csv_string)
@@ -36,8 +36,6 @@ class TxtLoaderService(MeshLoaderService):
         return [(int(row[0]), int(row[1]), int(row[2])) for row in rows]
 
     def _load_2d_list(self, path: str | Path) -> list[list]:
-        """Helper to read a CSV/TXT file and return a 2D list with original types preserved."""
-
         with open(path, "r", newline="") as f:
             csv_string = f.read()
         return csv_to_list(csv_string)

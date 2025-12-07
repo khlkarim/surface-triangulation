@@ -8,12 +8,10 @@ class MeshLoaderService(ABC):
 
     @abstractmethod
     def load(self, path: str | Path) -> MeshData:
-        """Load 3D mesh data from a file."""
         pass
 
     @abstractmethod
     def export(self, path: str | Path, mesh: MeshData) -> None:
-        """Export MeshData to a file."""
         pass
 
     @abstractmethod

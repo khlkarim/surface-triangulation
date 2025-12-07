@@ -22,9 +22,7 @@ class MeshModel(QObject):
         if faces is not None:
             self.faces = faces
 
-    # ---------------------
     # Vertices
-    # ---------------------
     @property
     def vertices(self) -> List[Tuple[float, float, float]] | None:
         return self._vertices
@@ -34,9 +32,7 @@ class MeshModel(QObject):
         self._vertices = value
         self.data_changed.emit()
 
-    # ---------------------
     # Edges
-    # ---------------------
     @property
     def edges(self) -> List[Tuple[int, int]] | None:
         return self._edges
@@ -46,9 +42,7 @@ class MeshModel(QObject):
         self._edges = value
         self.data_changed.emit()
 
-    # ---------------------
     # Faces
-    # ---------------------
     @property
     def faces(self) -> List[Tuple[int, int, int]] | None:
         return self._faces
@@ -58,16 +52,12 @@ class MeshModel(QObject):
         self._faces = value
         self.data_changed.emit()
 
-    # ---------------------
     # Hydrated check
-    # ---------------------
     @property
     def hydrated(self) -> bool:
         return self.vertices is not None
 
-    # ---------------------
     # Reset
-    # ---------------------
     def reset(
         self,
         vertices: List[Tuple[float, float, float]] | None = None,
