@@ -1,13 +1,14 @@
 import numpy as np
-from vispy.scene import Mesh, Markers, Line, XYZAxis
+from vispy.scene import Mesh, Line, XYZAxis
 from surface_triangulation.ui.renderers.render_mode import RenderMode
+from surface_triangulation.ui.renderers.vispy.labeled.labeled_points import LabeledPoints
 
 class MeshRenderer:
     def __init__(self, parent_viewbox):
         # Visuals
         self.axis = XYZAxis()
         self.mesh = Mesh()
-        self.points = Markers()
+        self.points = LabeledPoints()
         self.lines = Line(connect='segments')
 
         # Add to the parent viewbox
@@ -17,19 +18,12 @@ class MeshRenderer:
         parent_viewbox.add(self.lines)
 
     def update_data(self, model):
-        if not model.hydrated:
-            # Hide visuals if model is not ready
-            self.mesh.visible = False
-            self.points.visible = False
-            self.lines.visible = False
-            return
-
         verts = np.asarray(model.vertices or [], dtype=float)
         edges = np.asarray(model.edges or [], dtype=int)
         faces = np.asarray(model.faces or [], dtype=int)
 
         # Update vertices (points)
-        self.points.set_data(verts) if verts.size else self.points.set_data()
+        self.points.update_data(verts) if verts.size else self.points.update_data(np.empty((0, 2)))
 
         # Update edges (lines)
         if edges.size:
@@ -45,6 +39,6 @@ class MeshRenderer:
             self.mesh.set_data()
 
     def update_render_mode(self, mode: RenderMode):
-        self.points.visible = mode == RenderMode.POINTS
+        self.points.visible = True
         self.lines.visible = mode == RenderMode.LINES
         self.mesh.visible = mode == RenderMode.TRIANGLES

@@ -9,7 +9,7 @@ class Canvas(QWidget):
 
         self.canvas = SceneCanvas(keys='interactive', show=True)
         self.view = self.canvas.central_widget.add_view()
-        self.view.camera = TurntableCamera(fov=75, elevation=45, azimuth=140)
+        self.view.camera = TurntableCamera(fov=75, elevation=90, azimuth=0)
 
         self.mesh_renderer = MeshRenderer(self.view)
 
