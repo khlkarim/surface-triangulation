@@ -35,10 +35,11 @@ from surface_triangulation.core.models.triangulation_solution import SolutionSta
 #     gurobi_data_mapper.define_variables(model, triangulation_problem_01)
 #     gurobi_data_mapper.apply_constraints(model, triangulation_problem_01)
 
-def test_from_gurobi_result_extracts_selected_variables(gurobi_data_mapper, triangulation_problem_05):
-    model = gurobi_data_mapper.to_gurobi_model(triangulation_problem_05)
-    model.optimize()
-    solution = gurobi_data_mapper.from_gurobi_result(model)
+def test_triangulation_problems(gurobi_data_mapper, triangulation_problems):
+    for problem in triangulation_problems:
+        model = gurobi_data_mapper.to_gurobi_model(problem)
+        model.optimize()
+        solution = gurobi_data_mapper.from_gurobi_result(model)
 
-    print(solution)
-    assert solution.solution_status == SolutionStatus.OPTIMAL
+        print(solution)
+        assert solution.solution_status == SolutionStatus.OPTIMAL

@@ -43,10 +43,8 @@ def build_problem():
     ]
 
     constraints = [
-        TriangulationConstraint.PLANARITY,
-        TriangulationConstraint.EDGE_COMPATIBILITY,
-        TriangulationConstraint.BOUNDARY_RESPECT,
-        TriangulationConstraint.TRIANGLE_EDGE_INCIDENCE
+        TriangulationConstraint.NO_CROSSINGS,
+        TriangulationConstraint.EDGE_COUNT,
     ]
 
     objective = TriangulationObjective.MINIMIZE_TOTAL_LENGTH
