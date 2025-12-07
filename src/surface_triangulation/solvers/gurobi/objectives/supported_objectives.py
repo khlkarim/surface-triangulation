@@ -19,7 +19,7 @@ def objective_minimize_number_of_triangles(m, data):
     logger.debug("Applying MINIMIZE_NUMBER_OF_TRIANGLES objective")
     expr = LinExpr()
 
-    for face_key, var in m._face_vars.items():
+    for _, var in m._face_vars.items():
         expr += var
 
     m.setObjective(expr, GRB.MINIMIZE)

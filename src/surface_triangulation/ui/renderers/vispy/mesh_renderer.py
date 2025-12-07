@@ -2,6 +2,7 @@ import numpy as np
 from loguru import logger
 
 from vispy.scene import Mesh, Line, XYZAxis
+from vispy.visuals.filters.mesh import WireframeFilter
 from surface_triangulation.ui.renderers.render_mode import RenderMode
 from surface_triangulation.ui.renderers.vispy.labeled.labeled_points import LabeledPoints
 
@@ -11,7 +12,11 @@ class MeshRenderer:
         
         # Visuals
         self.axis = XYZAxis()
+        
         self.mesh = Mesh()
+        wireframe = WireframeFilter()
+        self.mesh.attach(wireframe)
+
         self.points = LabeledPoints()
         self.lines = Line(connect='segments')
 
