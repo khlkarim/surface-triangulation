@@ -5,9 +5,7 @@ from .mesh_loader_service import MeshLoaderService
 from .trimesh_loader_service import TrimeshLoaderService
 
 class MeshLoaderRegistry(MeshLoaderService):
-    """
-    Factory/mediator that delegates to the appropriate loader based on file extension.
-    """
+    """Mediator that delegates to the appropriate loader based on file extension."""
 
     def __init__(self):
         # Dependency injection – easy to extend dynamically

@@ -64,8 +64,8 @@ def build_problem():
     ]
 
     constraints = [
-        TriangulationConstraint.NO_CROSSINGS,
         TriangulationConstraint.EDGE_COUNT,
+        TriangulationConstraint.NO_CROSSING_EDGES,
     ]
 
     objective = TriangulationObjective.MINIMIZE_TOTAL_LENGTH
