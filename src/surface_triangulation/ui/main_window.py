@@ -3,11 +3,10 @@ from PyQt6.QtWidgets import QMainWindow
 from surface_triangulation.ui.models.mesh_model import MeshModel
 from surface_triangulation.ui.models.triangulation_config_model import TriangulationConfigModel
 
+from surface_triangulation.ui.services.triangulation_service import TriangulationService
 from surface_triangulation.ui.views.main import MainView
 
 from surface_triangulation.ui.services.io_service import IOService
-from surface_triangulation.ui.data_mappers.core_data_mapper import CoreDataMapper
-from surface_triangulation.solvers.gurobi.gurobi_triangulation_service import GurobiTriangulationService
 
 from surface_triangulation.ui.controllers.canvas_controller import CanvasController
 from surface_triangulation.ui.controllers.config_controller import ConfigController
@@ -29,10 +28,9 @@ class MainWindow(QMainWindow):
         # Create views
         self.main_view = MainView()
 
-        # Create services (maybe services should be encapsulated in a dependency container)
+        # Create services
         self.io_service = IOService()
-        self.core_data_mapper = CoreDataMapper()
-        self.triangulation_service = GurobiTriangulationService()
+        self.triangulation_service = TriangulationService()
 
         # Create controllers
         self.import_controller = ImportController(self.main_view, self.problem_mesh, self.io_service)
@@ -48,8 +46,7 @@ class MainWindow(QMainWindow):
             self.problem_mesh, 
             self.solution_mesh,
             self.config, 
-            self.triangulation_service,
-            self.core_data_mapper
+            self.triangulation_service
         )
 
         self.setCentralWidget(self.main_view)
