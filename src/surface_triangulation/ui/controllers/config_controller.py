@@ -50,7 +50,7 @@ class ConfigController(QObject):
         logger.debug("Cleared loaded file inputs")
 
     @pyqtSlot()
-    @handle_exceptions
+    @handle_exceptions("Failed to set configuration")
     def update_model_from_view(self):
         cfg = self.config_ui
         logger.debug("Updating model from view")

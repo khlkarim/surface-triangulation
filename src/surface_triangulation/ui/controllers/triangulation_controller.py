@@ -31,7 +31,7 @@ class TriangulationController(QObject):
         self.view.controls.triangulate_btn.clicked.connect(self.triangulate)
 
     @pyqtSlot()
-    @handle_exceptions
+    @handle_exceptions("Triangulation failed")
     def triangulate(self):
         solution_mesh = self.triangulation_service.solve(self.problem_mesh, self.config)
         self.solution_mesh.reset(solution_mesh.vertices, solution_mesh.edges, solution_mesh.faces)

@@ -23,7 +23,7 @@ class ImportController(QObject):
         self.view.import_widget.import_btn.clicked.connect(self.load_data)
 
     @pyqtSlot()
-    @handle_exceptions
+    @handle_exceptions("Failed to import data")
     def load_data(self):
         path = self.view.import_widget.import_tab.file_input.selected_file()
         csv_string = self.view.import_widget.import_tab.text_input.toPlainText()

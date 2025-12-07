@@ -24,7 +24,7 @@ class ExportController(QObject):
         self.view.export_widget.export_faces_btn.file_selected.connect(self.export_faces)
 
     @pyqtSlot(str)
-    @handle_exceptions
+    @handle_exceptions("Failed to export mesh")
     def export_mesh(self, path):
         if path is not None:
             logger.debug("Exporting mesh to {}", path)
@@ -34,7 +34,7 @@ class ExportController(QObject):
             logger.warning("Export mesh called with None path")
 
     @pyqtSlot(str)
-    @handle_exceptions
+    @handle_exceptions("Failed to export edges")
     def export_edges(self, path):
         if path is not None:
             logger.debug("Exporting edges to {}", path)
@@ -44,7 +44,7 @@ class ExportController(QObject):
             logger.warning("Export edges called with None path")
         
     @pyqtSlot(str)
-    @handle_exceptions
+    @handle_exceptions("Failed to export faces")
     def export_faces(self, path):
         if path is not None:
             logger.debug("Exporting faces to {}", path)
