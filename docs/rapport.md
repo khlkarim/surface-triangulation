@@ -2,15 +2,6 @@
 
 ---
 
-## Page de garde
-
-**Titre du projet :** Triangulation: Rendu 3D et maillage d'objets.  
-**Auteur :** Karim Khili  
-**Date :** Décembre 2025  
-**Établissement :** INSAT  
-
----
-
 ## Liste des acronymes, notation et glossaire
 
 | Acronyme/Terme | Signification |
