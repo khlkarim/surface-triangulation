@@ -49,5 +49,5 @@ points lie on the same $(d-1)$ -dimensional hyperplane)."
 given A{ a configuration of points in d-dimensional space }
 the triangulation of A is: the division of the convex hull of A using d-simplices
 
-triangulation in 2D dimensions is the division of the convex hull (surface) of the set of points into triangules
+triangulation in 2D dimensions is the division of the convex hull (surface) of the set of points into triangles
 triangulation in 3D dimensions is the division of the convex hull (volume) of the set of points into polyhedra

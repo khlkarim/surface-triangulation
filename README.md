@@ -1,7 +1,7 @@
 # Surface Triangulation
 
-![Screenshot 1](./docs/screenshot-1.png)
-![Screenshot 2](./docs/screenshot-2.png)
+![Screenshot 1](./docs/images/screenshot-1.png)
+![Screenshot 2](./docs/images/screenshot-2.png)
 
 A Python-based application for solving surface triangulation problems using mathematical optimization. This tool allows you to generate optimal triangulations from sets of candidate vertices, edges, and faces based on customizable objectives and constraints.
 
