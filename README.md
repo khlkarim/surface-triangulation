@@ -93,6 +93,26 @@ else:
     print("No feasible triangulation found.")
 ```
 
+## Testing
+
+### Running Tests
+
+To run the test suite:
+
+```bash
+poetry run pytest -s
+```
+
+### Generating Test Resources
+
+You can generate test data to use as input when testing the application:
+
+```bash
+poetry run generate_triangulation_problem
+```
+
+This command creates triangulation problem files that can be loaded into the application for testing and validation purposes.
+
 ## Project Structure
 
 -   `src/surface_triangulation/core`: Core data models and interfaces.
