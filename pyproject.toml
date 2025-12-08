@@ -24,9 +24,14 @@ dependencies = [
 
 [tool.poetry.scripts]
 main = "surface_triangulation.main:main"
+generate_triangulation_problem = "tools.generate_triangulation_problem:main"
 
 [tool.poetry]
-packages = [{include = "surface_triangulation", from = "src"}, {include = "tests", from = "."}]
+packages = [
+    {include = "surface_triangulation", from = "src"}, 
+    {include = "tests", from = "."},
+    {include = "tools", from = "."},
+]
 
 [tool.pytest.ini_options]
 pythonpath = [

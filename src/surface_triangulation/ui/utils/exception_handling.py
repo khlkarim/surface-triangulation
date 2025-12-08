@@ -21,6 +21,7 @@ def handle_exceptions(custom_message: str | None = None):
             try:
                 return func(*args, **kwargs)
             except Exception as e:
+                print(e)
                 message = custom_message or str(e)
                 show_error(getattr(self, 'view', None), message)
         return wrapper

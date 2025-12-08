@@ -68,10 +68,7 @@ class IOService:
     # Vertices-only loading/exporting from TXT/CSV
     def load_vertices(self, path: str | Path):
         logger.debug(f"Loading vertices from '{path}'")
-        rows = self._load_2d_list_from_file(path)
-        vertices = [(float(r[0]), float(r[1]), float(r[2])) for r in rows]
-        logger.debug(f"Loaded {len(vertices)} vertices")
-        return vertices
+        return self.registry.load_vertices(path)
 
     def export_vertices(self, path: str | Path, mesh_model) -> None:
         self._ensure_txt_or_csv(path)
@@ -85,10 +82,7 @@ class IOService:
     # Faces-only loading/exporting from TXT/CSV
     def load_faces(self, path: str | Path):
         logger.debug(f"Loading faces from '{path}'")
-        rows = self._load_2d_list_from_file(path)
-        faces = [(int(r[0]), int(r[1]), int(r[2])) for r in rows]
-        logger.debug(f"Loaded {len(faces)} faces")
-        return faces
+        return self.registry.load_faces(path)
 
     def export_faces(self, path: str | Path, mesh_model) -> None:
         self._ensure_txt_or_csv(path)
@@ -102,10 +96,7 @@ class IOService:
     # Edges-only loading/exporting from TXT/CSV
     def load_edges(self, path: str | Path):
         logger.debug(f"Loading edges from '{path}'")
-        rows = self._load_2d_list_from_file(path)
-        edges = [(int(r[0]), int(r[1])) for r in rows]
-        logger.debug(f"Loaded {len(edges)} edges")
-        return edges
+        return self.registry.load_edges(path)
 
     def export_edges(self, path: str | Path, mesh_model) -> None:
         self._ensure_txt_or_csv(path)
