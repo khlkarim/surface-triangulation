@@ -1,8 +1,5 @@
 # Synthèse : Triangulation de Surfaces par Programmation Linéaire
 
-## Nom du Projet
-**Triangulation Optimale de Surfaces par Programmation Linéaire en Nombres Entiers**
-
 ## Description du Problème
 La triangulation de surfaces est un problème fondamental en géométrie computationnelle avec de nombreuses applications en infographie, modélisation 3D et analyse par éléments finis. Traditionnellement, l'algorithme de triangulation de Delaunay est utilisé, mais il devient inefficace en trois dimensions ou plus.
 
